@@ -1,0 +1,23 @@
+# Node
+node_modules/
+npm-debug.log
+dist/
+
+# Environment
+.env
+.env.*.local
+
+# Docker
+*.pid
+*.log
+
+# Vite
+.vite
+
+# OS files
+.DS_Store
+Thumbs.db
+
+# IDE
+.vscode/
+.idea/

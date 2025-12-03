@@ -1,0 +1,41 @@
+/* Tailwind (must be at top) */
+@import "tailwindcss";
+@import "react-toastify/dist/ReactToastify.css";
+
+/* ========== RESET (safe) ========== */
+* {
+  box-sizing: border-box;
+}
+
+/* DO NOT force display: block here — it breaks Tailwind layout */
+body {
+  min-height: 100vh;
+  font-family: system-ui, sans-serif;
+  background-color: #0f172a; /* slate-900 */
+  color: #fff;
+  -webkit-font-smoothing: antialiased;
+}
+
+/* Optional smooth scroll */
+html {
+  scroll-behavior: smooth;
+}
+
+/* Utility container for sections */
+.section-container {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding-left: 1rem;
+  padding-right: 1rem;
+}
+
+/* Override shadcn defaults for dark theme */
+:root {
+  --accent: #1f2937 !important;        /* slate-800 */
+  --accent-foreground: #fff !important;
+
+  --muted: #1e293b !important;         /* slate-800 */
+  --muted-foreground: #cbd5e1 !important;
+
+  --card: #0f172a !important;          /* slate-900 */
+}
