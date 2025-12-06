@@ -118,16 +118,20 @@ export const googleCallback = async (req, res) => {
 
     const jwtToken = generateToken(user._id);
 
-    return res.redirect(`http://localhost:5173/auth-success?token=${jwtToken}`);
+    // ⭐ AUTO-SWITCH FRONTEND URL
+    const FRONTEND = process.env.FRONTEND_URL || "http://localhost:5173";
+
+    return res.redirect(`${FRONTEND}/auth-success?token=${jwtToken}`);
 
   } catch (error) {
     console.error("Google OAuth error:", error);
-    return res.status(500).json({
-      message: "Google OAuth Error",
-      error
-    });
+
+    const FRONTEND = process.env.FRONTEND_URL || "http://localhost:5173";
+
+    return res.redirect(`${FRONTEND}/login?error=oauth_failed`);
   }
 };
+
 
 export const getMe = async (req, res) => {
   res.json({ user: req.user });
