@@ -9,9 +9,8 @@ export const signup = async (req, res) => {
   try {
     const { name, email, password, profession } = req.body;
 
-    if (!profession) {
+    if (!profession)
       return res.status(400).json({ message: "Profession is required" });
-    }
 
     const exists = await User.findOne({ email });
     if (exists) return res.status(400).json({ message: "Email already exists" });
@@ -23,7 +22,7 @@ export const signup = async (req, res) => {
       email,
       password: hashed,
       profession,
-      mustSelectProfession: false
+      mustSelectProfession: false,
     });
 
     res.status(201).json({
@@ -52,7 +51,6 @@ export const login = async (req, res) => {
       token: generateToken(user._id),
       user,
     });
-
   } catch (error) {
     res.status(500).json({ message: error.message });
   }
@@ -78,6 +76,7 @@ export const googleCallback = async (req, res) => {
   try {
     const code = req.query.code;
 
+    // OAuth instance for token exchange
     const newOauth = new google.auth.OAuth2(
       process.env.GOOGLE_CLIENT_ID,
       process.env.GOOGLE_CLIENT_SECRET,
@@ -112,31 +111,32 @@ export const googleCallback = async (req, res) => {
       if (tokens.refresh_token) {
         user.gmailRefreshToken = tokens.refresh_token;
       }
-
       await user.save();
     }
 
     const jwtToken = generateToken(user._id);
 
-    // ⭐ AUTO-SWITCH FRONTEND URL
-    const FRONTEND = process.env.FRONTEND_URL || "http://localhost:5173";
+    // ⭐ Dynamic Frontend Redirect
+    const FRONTEND =
+      process.env.FRONTEND_URL || "http://localhost:5173";
 
     return res.redirect(`${FRONTEND}/auth-success?token=${jwtToken}`);
-
   } catch (error) {
     console.error("Google OAuth error:", error);
 
-    const FRONTEND = process.env.FRONTEND_URL || "http://localhost:5173";
+    const FRONTEND =
+      process.env.FRONTEND_URL || "http://localhost:5173";
 
     return res.redirect(`${FRONTEND}/login?error=oauth_failed`);
   }
 };
 
-
+// ------------------ GET PROFILE ------------------
 export const getMe = async (req, res) => {
   res.json({ user: req.user });
 };
 
+// ------------------ UPDATE PROFESSION ------------------
 export const updateProfession = async (req, res) => {
   try {
     const { profession } = req.body;
