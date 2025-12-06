@@ -3,7 +3,7 @@ import { Card, CardContent, CardHeader, CardTitle } from "../components/ui/card"
 import useFetch from "../hooks/useFetch";
 import api from "../lib/axios";
 import { toast } from "react-toastify";
-import { Mail, TrendingUp, AlertTriangle, Star, CheckCircle } from "lucide-react";
+import { AlertTriangle, Star, CheckCircle } from "lucide-react";
 import { useState } from "react";
 import { Link } from "react-router-dom";
 
@@ -12,10 +12,8 @@ export default function Dashboard() {
   const [syncing, setSyncing] = useState(false);
 
   const list = leads?.leads || [];
-
   const urgent = list.filter((l) => l.urgency === "high").length;
 
-  // ⭐ Priority = medium OR high OR score >= 60
   const priority = list.filter(
     (l) =>
       l.urgency === "high" ||
@@ -37,29 +35,31 @@ export default function Dashboard() {
   };
 
   return (
-    <div className="p-6 space-y-8">
-      <div className="flex justify-between items-center">
-        <h1 className="text-3xl font-bold">Dashboard</h1>
-        <Button onClick={syncEmails} disabled={syncing}>
+    <div className="p-4 md:p-6 space-y-8">
+      {/* HEADER */}
+      <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-3">
+        <h1 className="text-2xl md:text-3xl font-bold">Dashboard</h1>
+        <Button onClick={syncEmails} disabled={syncing} className="w-full md:w-auto">
           {syncing ? "Syncing..." : "Sync Gmail"}
         </Button>
       </div>
 
-      <div className="grid md:grid-cols-4 gap-6">
+      {/* GRID CARDS */}
+      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 md:gap-6">
 
         {/* Priority Leads */}
-        <Card className="bg-slate-900/60 border-white/10">
-          <CardHeader className="flex flex-row justify-between items-center">
-            <CardTitle>Priority Leads</CardTitle>
+        <Card className="bg-slate-900/70 border-white/10 rounded-xl shadow-lg p-2">
+          <CardHeader className="flex flex-row justify-between items-center pb-2">
+            <CardTitle className="text-base md:text-lg">Priority Leads</CardTitle>
             <Star size={22} className="text-yellow-400" />
           </CardHeader>
-
-          <CardContent>
-            <p className="text-4xl font-bold text-yellow-400">{priority}</p>
-
+          <CardContent className="pt-0">
+            <p className="text-3xl md:text-4xl font-bold text-yellow-400">
+              {priority}
+            </p>
             <Link
               to="/leads?priority=true"
-              className="text-sm text-blue-300 underline block mt-2"
+              className="text-sm md:text-base text-blue-300 underline block mt-2"
             >
               View Priority →
             </Link>
@@ -67,43 +67,42 @@ export default function Dashboard() {
         </Card>
 
         {/* High Urgency */}
-        <Card className="bg-slate-900/60 border-white/10">
-          <CardHeader className="flex flex-row justify-between items-center">
-            <CardTitle>High Urgency</CardTitle>
+        <Card className="bg-slate-900/70 border-white/10 rounded-xl shadow-lg p-2">
+          <CardHeader className="flex flex-row justify-between items-center pb-2">
+            <CardTitle className="text-base md:text-lg">High Urgency</CardTitle>
             <AlertTriangle size={22} className="text-red-400" />
           </CardHeader>
-
-          <CardContent>
-            <p className="text-4xl font-bold text-red-500">{urgent}</p>
-
+          <CardContent className="pt-0">
+            <p className="text-3xl md:text-4xl font-bold text-red-500">
+              {urgent}
+            </p>
             <Link
               to="/leads?high=true"
-              className="text-sm text-blue-300 underline block mt-2"
+              className="text-sm md:text-base text-blue-300 underline block mt-2"
             >
               View High Urgency →
             </Link>
           </CardContent>
         </Card>
 
-        {/* Completed Leads */}
-        <Card className="bg-slate-900/60 border-white/10">
-          <CardHeader className="flex flex-row justify-between items-center">
-            <CardTitle>Completed</CardTitle>
+        {/* Completed */}
+        <Card className="bg-slate-900/70 border-white/10 rounded-xl shadow-lg p-2">
+          <CardHeader className="flex flex-row justify-between items-center pb-2">
+            <CardTitle className="text-base md:text-lg">Completed</CardTitle>
             <CheckCircle size={22} className="text-green-400" />
           </CardHeader>
-
-          <CardContent>
-            <p className="text-4xl font-bold text-green-400">{completed}</p>
-
+          <CardContent className="pt-0">
+            <p className="text-3xl md:text-4xl font-bold text-green-400">
+              {completed}
+            </p>
             <Link
               to="/leads?completed=true"
-              className="text-sm text-blue-300 underline block mt-2"
+              className="text-sm md:text-base text-blue-300 underline block mt-2"
             >
               View Completed →
             </Link>
           </CardContent>
         </Card>
-
       </div>
     </div>
   );

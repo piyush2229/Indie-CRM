@@ -11,6 +11,7 @@ export default function Settings() {
       <div className="space-y-4">
         <p><strong>Name:</strong> {user?.name}</p>
         <p><strong>Email:</strong> {user?.email}</p>
+        <p><strong>Profession:</strong> {user?.profession}</p>
       </div>
 
       <Button className="mt-6" variant="destructive" onClick={logout}>

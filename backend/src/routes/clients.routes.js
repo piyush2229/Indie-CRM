@@ -1,10 +1,13 @@
+// backend/src/routes/clients.routes.js
 import express from "express";
 import { protect } from "../middleware/auth.middleware.js";
+
 import {
   convertLeadToClient,
   listClients,
   getClient,
-  addClientHistory
+  addClientHistory,
+  deleteClient // ⭐ NEW
 } from "../controllers/client.controller.js";
 
 import { replyToClient } from "../controllers/clientEmail.controller.js";
@@ -18,7 +21,10 @@ router.get("/:id", protect, getClient);
 
 router.post("/:id/history", protect, addClientHistory);
 
-// ⭐ NEW: Send email reply
+// ⭐ Send email reply
 router.post("/:id/reply", protect, replyToClient);
+
+// ⭐ NEW — Delete Client + All Related Leads
+router.delete("/:id", protect, deleteClient);
 
 export default router;

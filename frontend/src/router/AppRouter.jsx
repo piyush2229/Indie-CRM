@@ -4,6 +4,7 @@ import { useAuth } from "../context/AuthContext";
 // Layout
 import PageWrapper from "../components/layout/PageWrapper";
 
+import ChooseProfession from "../pages/Auth/ChooseProfession";
 // Pages
 import Login from "../pages/Auth/Login";
 import AuthSuccess from "../pages/Auth/AuthSuccess";
@@ -13,7 +14,8 @@ import Dashboard from "../pages/Dashboard";
 import LeadsList from "../pages/Leads/LeadsList";
 import LeadDetails from "../pages/Leads/LeadDetails";
 import Settings from "../pages/Settings";
-
+import ProjectDetails from "../pages/Projects/ProjectDetails";
+import ProjectsList from "../pages/Projects/ProjectsList";
 
 // ---------- Protected Route Wrapper ----------
 function PrivateRoute({ children }) {
@@ -50,7 +52,15 @@ export default function AppRouter() {
             </PrivateRoute>
           }
         />
-
+        <Route
+          path="/projects"
+          element={
+            <PrivateRoute>
+              <ProjectsList />
+            </PrivateRoute>
+          }
+        />
+        <Route path="/choose-profession" element={<ChooseProfession />} />
         <Route
           path="/leads"
           element={
@@ -94,6 +104,15 @@ export default function AppRouter() {
             </PrivateRoute>
         }
         />
+        <Route
+          path="/projects/:id"
+          element={
+            <PrivateRoute>
+              <ProjectDetails />
+            </PrivateRoute>
+          }
+        />
+
 
         {/* Default → redirect to dashboard */}
         <Route path="/" element={<Navigate to="/dashboard" replace />} />

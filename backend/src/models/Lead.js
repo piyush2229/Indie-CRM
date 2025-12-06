@@ -4,16 +4,19 @@ const { Schema } = mongoose;
 
 const leadSchema = new Schema(
   {
-    user: { type: Schema.Types.ObjectId, ref: "User", required: true }, // owner
+    user: { type: Schema.Types.ObjectId, ref: "User", required: true },
 
     // Basic info
     name: { type: String, default: "" },
     email: { type: String, default: "" },
     phone: { type: String, default: "" },
     company: { type: String, default: "" },
-    source: { type: String, enum: ["gmail","linkedin","webform","manual","other"], default: "manual" },
+    source: {
+      type: String,
+      enum: ["gmail", "linkedin", "webform", "manual", "other"],
+      default: "manual",
+    },
 
-    // message / email content
     subject: { type: String, default: "" },
     body: { type: String, default: "" },
 
@@ -33,27 +36,36 @@ const leadSchema = new Schema(
       default: "new",
     },
 
-    // AI-generated fields
+    // ⭐ AI processing status — REQUIRED
+    aiStatus: {
+      type: String,
+      enum: ["pending", "done"],
+      default: "pending",
+    },
+
+    // AI fields
     ai_tags: [{ type: String }],
     ai_summary: { type: String, default: "" },
-    lead_score: { type: Number, default: 0 }, // 0-100
-    urgency: { type: String, enum: ["low","medium","high","unknown"], default: "unknown" },
+    lead_score: { type: Number, default: 0 },
+    urgency: {
+      type: String,
+      enum: ["low", "medium", "high", "unknown"],
+      default: "unknown",
+    },
 
-    // Follow-up automation
     next_followup_at: { type: Date },
     followup_required: { type: Boolean, default: false },
     reminders_sent: { type: Number, default: 0 },
 
-    // raw metadata
     messageId: { type: String },
     threadId: { type: String },
+    isPromotion: { type: Boolean, default: false },
 
-    // soft deletes / flags
     archived: { type: Boolean, default: false },
     completed: { type: Boolean, default: false },
-completed_at: { type: Date, default: null },
-handled_by: { type: mongoose.Schema.Types.ObjectId, ref: "User", default: null },
-    // ⭐ NEW FIELD — track conversion lead → client
+    completed_at: { type: Date, default: null },
+    handled_by: { type: Schema.Types.ObjectId, ref: "User", default: null },
+
     convertedToClient: {
       type: Schema.Types.ObjectId,
       ref: "Client",
@@ -63,7 +75,6 @@ handled_by: { type: mongoose.Schema.Types.ObjectId, ref: "User", default: null }
   { timestamps: true }
 );
 
-// Useful index for user lookups and stage filtering
 leadSchema.index({ user: 1, stage: 1, lead_score: -1 });
 leadSchema.index({ email: 1 });
 

@@ -7,7 +7,12 @@ import { google } from "googleapis";
 // ------------------ SIGNUP ------------------
 export const signup = async (req, res) => {
   try {
-    const { name, email, password } = req.body;
+    const { name, email, password, profession } = req.body;
+
+    if (!profession) {
+      return res.status(400).json({ message: "Profession is required" });
+    }
+
     const exists = await User.findOne({ email });
     if (exists) return res.status(400).json({ message: "Email already exists" });
 
@@ -17,6 +22,8 @@ export const signup = async (req, res) => {
       name,
       email,
       password: hashed,
+      profession,
+      mustSelectProfession: false
     });
 
     res.status(201).json({
@@ -124,4 +131,23 @@ export const googleCallback = async (req, res) => {
 
 export const getMe = async (req, res) => {
   res.json({ user: req.user });
+};
+
+export const updateProfession = async (req, res) => {
+  try {
+    const { profession } = req.body;
+
+    const allowed = ["freelancer", "agency", "real_estate", "coach"];
+    if (!allowed.includes(profession))
+      return res.status(400).json({ message: "Invalid profession" });
+
+    const user = await User.findById(req.user._id);
+    user.profession = profession;
+    user.mustSelectProfession = false;
+    await user.save();
+
+    res.json({ success: true, user });
+  } catch (err) {
+    res.status(500).json({ message: err.message });
+  }
 };

@@ -5,10 +5,19 @@ export default function Navbar() {
   const { user, logout } = useAuth();
 
   return (
-    <div className="w-full h-16 bg-slate-900/60 backdrop-blur border-b border-white/10 px-6 flex items-center justify-between">
-      <h2 className="text-xl font-semibold">Welcome back 👋</h2>
+    <div className="
+      w-full h-16 bg-slate-900/60 backdrop-blur 
+      border-b border-white/10 
+      px-4 md:px-6 
+      flex items-center justify-between
+    ">
+      {/* Left: Title */}
+      <h2 className="text-lg md:text-xl font-semibold">
+        Welcome back 👋
+      </h2>
 
-      <div className="flex items-center gap-4">
+      {/* Right: User Info + Logout (Desktop Only) */}
+      <div className="hidden md:flex items-center gap-4">
         <div className="flex items-center gap-3">
           <img
             src={`https://ui-avatars.com/api/?name=${user?.name || "User"}`}

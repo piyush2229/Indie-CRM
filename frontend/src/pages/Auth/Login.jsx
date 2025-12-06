@@ -1,90 +1,185 @@
+import { ArrowRight, Sparkles, Mail, BrainCircuit, ShieldCheck, Zap } from "lucide-react";
 import Button from "../../components/ui/button";
-import { Card, CardHeader, CardContent, CardTitle } from "../../components/ui/card";
 import api from "../../lib/axios";
-import { ArrowRight } from "lucide-react";
 
-/* GOOGLE ICON COMPONENT */
-function GoogleIcon({ size = 18 }) {
+/* GOOGLE LOGIN HANDLER */
+const startGoogleLogin = async () => {
+  try {
+    const res = await api.get("/auth/google/url");
+    window.location.href = res.data.url;
+  } catch (err) {
+    console.error("Google login failed", err);
+  }
+};
+
+export default function Landing() {
   return (
-    <svg width={size} height={size} viewBox="0 0 48 48">
-      <path fill="#EA4335" d="M24 9.5c3.54 0 6.71 1.22 9.21 3.61l6.85-6.85C35.9 2.38 30.47 0 24 0 14.32 0 6.06 5.6 2.23 13.72l7.98 6.19C12.43 13 17.74 9.5 24 9.5z"/>
-      <path fill="#FBBC05" d="M46.14 24.55c0-1.64-.15-3.24-.42-4.78H24v9.06h12.65c-.55 2.98-2.23 5.51-4.77 7.26l7.32 5.67C43.87 37.19 46.14 31.41 46.14 24.55z"/>
-      <path fill="#34A853" d="M10.21 28.1c-.5-1.5-.78-3.09-.78-4.75 0-1.66.28-3.25.78-4.75L2.23 12.47C.78 15.44 0 19.1 0 22.85s.78 7.41 2.23 10.38l7.98-6.19z"/>
-      <path fill="#4285F4" d="M24 48c6.48 0 11.93-2.13 15.9-5.79l-7.32-5.67C30.5 38.77 27.39 40 24 40c-6.26 0-11.57-3.5-14.03-8.41l-7.98 6.19C6.06 42.4 14.32 48 24 48z"/>
-    </svg>
-  );
-}
+    <div className="min-h-screen bg-gradient-to-b from-slate-900 to-slate-950 text-white">
 
-export default function Login() {
-  const startGoogleLogin = async () => {
-    try {
-      const res = await api.get("/auth/google/url");
-      window.location.href = res.data.url;
-    } catch (err) {
-      console.error("Google login failed", err);
-    }
-  };
-
-  return (
-    <div className="min-h-screen bg-gradient-to-b from-slate-900 to-slate-950 text-white flex flex-col">
-
-      {/* HEADER (same as landing) */}
-      <header className="px-6 py-4 border-b border-white/10 backdrop-blur-md sticky top-0 z-50">
+      {/* NAVBAR */}
+      <nav className="px-6 py-5 border-b border-white/10 backdrop-blur-md sticky top-0 z-50">
         <div className="max-w-7xl mx-auto flex items-center justify-between">
-          <div className="flex items-center gap-2">
-            <span className="text-2xl font-extrabold tracking-tight">Indie CRM</span>
-            <span className="px-2 py-0.5 text-xs bg-blue-600/20 border border-blue-400/40 rounded">
-              Beta
-            </span>
+          <div className="text-2xl font-extrabold">IndieCRM</div>
+
+          <div className="flex items-center gap-6">
+            <button
+              onClick={startGoogleLogin}
+              className="text-slate-300 hover:text-white transition"
+            >
+              Login
+            </button>
+
+            <Button
+              onClick={startGoogleLogin}
+              className="bg-blue-600 hover:bg-blue-700 px-5"
+            >
+              Get Started
+            </Button>
           </div>
         </div>
-      </header>
+      </nav>
 
-      {/* HERO TEXT */}
-      <section className="px-6 pt-16 pb-10 md:pt-24 text-center">
-        <div className="max-w-4xl mx-auto">
-          <h1 className="text-4xl md:text-6xl font-extrabold tracking-tight">
-            Sign in  
-            <span className="text-blue-400 block md:inline">with Google</span>
+
+      {/* HERO SECTION */}
+      <section className="pt-24 pb-20 px-6 text-center">
+        <div className="max-w-5xl mx-auto">
+          <h1 className="text-5xl md:text-7xl font-extrabold tracking-tight leading-tight">
+            The AI CRM that reads your{" "}
+            <span className="text-blue-400">Emails, Creates Leads</span>,
+            and Grows Your Business.
           </h1>
 
-          <p className="mt-6 text-lg text-slate-300 max-w-2xl mx-auto">
-            Continue to IndieCRM — the AI-powered CRM that syncs Gmail, analyzes leads, and automates your workflow.
+          <p className="mt-8 text-lg md:text-xl text-slate-300 max-w-2xl mx-auto">
+            IndieCRM automatically syncs Gmail → analyzes emails → extracts leads →
+            scores them using AI → schedules follow-ups —
+            <span className="text-white font-semibold"> all in one place.</span>
           </p>
+
+          <div className="mt-10 flex justify-center">
+            <Button
+              onClick={startGoogleLogin}
+              className="bg-blue-600 hover:bg-blue-700 text-lg px-8 py-4 flex items-center gap-2"
+            >
+              Start For Free <ArrowRight size={20} />
+            </Button>
+          </div>
+
+          <p className="text-slate-400 text-sm mt-4">No credit card required.</p>
         </div>
       </section>
 
-      {/* LOGIN CARD */}
-      <div className="px-6 flex justify-center mb-10">
-        <Card className="w-full max-w-lg bg-slate-900/60 border border-white/10 shadow-xl rounded-xl backdrop-blur">
-          
-          <CardHeader>
-            <CardTitle className="text-center text-2xl font-bold text-white">
-              Continue with Google
-            </CardTitle>
-          </CardHeader>
 
-          <CardContent className="space-y-6">
-            <Button
-              variant="outline"
-              onClick={startGoogleLogin}
-              className="w-full bg-white text-black hover:bg-gray-200 flex justify-center items-center gap-2 py-3"
+      {/* FEATURE BADGES */}
+      <section className="px-6 py-8">
+        <div className="max-w-6xl mx-auto grid md:grid-cols-4 gap-4 text-center">
+          {[
+            { icon: Mail, text: "Auto Gmail Sync" },
+            { icon: BrainCircuit, text: "AI Lead Scoring" },
+            { icon: Zap, text: "Instant Lead Extraction" },
+            { icon: ShieldCheck, text: "Enterprise Security" },
+          ].map(({ icon: Icon, text }, i) => (
+            <div
+              key={i}
+              className="bg-slate-800/40 border border-slate-700 p-5 rounded-xl flex flex-col items-center gap-3"
             >
-              <GoogleIcon size={20} />
-              Sign in with Google <ArrowRight size={18} />
-            </Button>
+              <Icon size={28} className="text-blue-400" />
+              <p className="text-slate-300">{text}</p>
+            </div>
+          ))}
+        </div>
+      </section>
 
-            <p className="text-center text-slate-400 text-sm">
-              Fast • Secure • One-click login
+
+      {/* WHY SECTION */}
+      <section className="px-6 py-24">
+        <div className="max-w-6xl mx-auto grid md:grid-cols-2 gap-14 items-center">
+
+          {/* LEFT */}
+          <div>
+            <h2 className="text-4xl font-bold leading-tight">
+              Stop copy-pasting leads from email.
+              <span className="text-blue-400 block">IndieCRM does it automatically.</span>
+            </h2>
+
+            <p className="text-slate-400 mt-6 text-lg">
+              Every incoming email is scanned. If it looks like a project inquiry,
+              hire request, or quotation email — IndieCRM generates a ready-to-use lead instantly.
             </p>
-          </CardContent>
 
-        </Card>
-      </div>
+            <ul className="mt-8 space-y-4 text-slate-300">
+              <li>✔ AI detects client intent & urgency</li>
+              <li>✔ Extracts name, email, project details</li>
+              <li>✔ Scores leads 0–100 based on intent</li>
+              <li>✔ Auto follow-up reminders</li>
+            </ul>
 
-      <footer className="text-center text-slate-500 text-sm mb-6">
-        Indie CRM © {new Date().getFullYear()}
+            <Button
+              onClick={startGoogleLogin}
+              className="mt-10 bg-blue-600 px-7 py-3 hover:bg-blue-700"
+            >
+              Try It Now
+            </Button>
+          </div>
+
+          {/* RIGHT */}
+          <div className="rounded-xl border border-slate-700 bg-slate-900/40 p-6 shadow-xl">
+            <div className="text-slate-400">Example extracted from Gmail:</div>
+
+            <div className="mt-4 bg-slate-800 p-4 rounded-xl border border-slate-700">
+              <p className="text-blue-400 font-semibold">New Lead Detected</p>
+              <p className="mt-2 text-slate-300">
+                "Hey, I need a website redesign. Budget around $1200."
+              </p>
+              <p className="text-green-400 font-semibold mt-3">
+                Score: 92 (High Intent)
+              </p>
+            </div>
+          </div>
+
+        </div>
+      </section>
+
+
+      {/* FAQ */}
+      <section className="px-6 py-20">
+        <div className="max-w-5xl mx-auto">
+          <h2 className="text-3xl font-bold text-center mb-12">
+            Frequently Asked Questions
+          </h2>
+
+        <div className="space-y-8">
+          {[
+            {
+              q: "How does IndieCRM get leads from Gmail?",
+              a: "We use secure OAuth permissions to analyze your inbox and detect client emails using AI.",
+            },
+            {
+              q: "Do you store my emails?",
+              a: "No. We only store structured lead data. Raw emails never leave your Gmail account.",
+            },
+            {
+              q: "Can I connect multiple Gmail accounts?",
+              a: "Not right now — but multi-account support is coming soon.",
+            },
+          ].map((item, i) => (
+            <div
+              key={i}
+              className="bg-slate-900 p-6 rounded-xl border border-slate-800"
+            >
+              <p className="font-semibold text-white">{item.q}</p>
+              <p className="mt-2 text-slate-400">{item.a}</p>
+            </div>
+          ))}
+        </div>
+        </div>
+      </section>
+
+
+      {/* FOOTER */}
+      <footer className="text-center text-slate-500 py-10 text-sm">
+        IndieCRM © {new Date().getFullYear()} — All rights reserved
       </footer>
+
     </div>
   );
 }
