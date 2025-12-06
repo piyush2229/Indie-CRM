@@ -1,0 +1,20 @@
+# --- Base Image ---
+FROM node:18-alpine
+
+# --- Create App Directory ---
+WORKDIR /app
+
+# --- Copy package.json and package-lock.json ---
+COPY package*.json ./
+
+# --- Install Dependencies ---
+RUN npm install
+
+# --- Copy the Entire Backend Code ---
+COPY . .
+
+# --- Expose Backend Port ---
+EXPOSE 3000
+
+# --- Start the Server ---
+CMD ["npm", "start"]
