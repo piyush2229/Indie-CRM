@@ -1,20 +1,34 @@
-# --- Base Image ---
-FROM node:18-alpine
+# --------------------------
+# 1. Use lightweight Node
+# --------------------------
+FROM node:20-alpine
 
-# --- Create App Directory ---
+# --------------------------
+# 2. Create working directory
+# --------------------------
 WORKDIR /app
 
-# --- Copy package.json and package-lock.json ---
+# --------------------------
+# 3. Copy package.json files
+# --------------------------
 COPY package*.json ./
 
-# --- Install Dependencies ---
-RUN npm install
+# --------------------------
+# 4. Install only production deps
+# --------------------------
+RUN npm install --production
 
-# --- Copy the Entire Backend Code ---
+# --------------------------
+# 5. Copy backend source code
+# --------------------------
 COPY . .
 
-# --- Expose Backend Port ---
+# --------------------------
+# 6. Expose backend port
+# --------------------------
 EXPOSE 3000
 
-# --- Start the Server ---
-CMD ["npm", "start"]
+# --------------------------
+# 7. Start the backend
+# --------------------------
+CMD ["node", "src/server.js"]
